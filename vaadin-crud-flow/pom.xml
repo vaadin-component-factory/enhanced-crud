@@ -49,6 +49,11 @@
             <artifactId>vaadin-grid-flow</artifactId>
             <version>${grid.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-button-flow</artifactId>
+            <version>${button.version}</version>
+        </dependency>
 
         <!--Test scoped-->
         <dependency>

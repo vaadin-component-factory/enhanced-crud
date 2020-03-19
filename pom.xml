@@ -38,6 +38,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <textfield.version>3.0-SNAPSHOT</textfield.version>
         <grid.version>5.0-SNAPSHOT</grid.version>
+        <button.version>3.0-SNAPSHOT</button.version>
     </properties>
 
     <modules>

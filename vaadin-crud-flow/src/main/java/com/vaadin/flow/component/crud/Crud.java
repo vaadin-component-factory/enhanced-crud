@@ -26,14 +26,19 @@ import com.vaadin.flow.component.EventData;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasTheme;
 import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.polymertemplate.Id;
+import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
 import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.internal.JsonSerializer;
 import com.vaadin.flow.shared.Registration;
+import com.vaadin.flow.templatemodel.TemplateModel;
 import elemental.json.JsonObject;
 
 import java.util.Arrays;
@@ -65,10 +70,10 @@ import java.util.stream.Collectors;
  * @param <E> the bean type
  */
 @Tag("vaadin-crud")
-@NpmPackage(value = "@vaadin/vaadin-crud", version="1.1.0")
-@JsModule("@vaadin/vaadin-crud/src/vaadin-crud.js")
-@JsModule("@vaadin/vaadin-crud/src/vaadin-crud-edit-column.js")
-public class Crud<E> extends Component implements HasSize, HasTheme {
+@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-crud", version="1.2.4")
+@JsModule("@vaadin-component-factory/vcf-enhanced-crud/src/vaadin-crud.js")
+@JsModule("@vaadin-component-factory/vcf-enhanced-crud/src/vaadin-crud-edit-column.js")
+public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, HasTheme {
 
     private static final String EDIT_COLUMN_KEY = "vaadin-crud-edit-column";
     private static final String EVENT_PREVENT_DEFAULT_JS = "event.preventDefault()";
@@ -83,10 +88,29 @@ public class Crud<E> extends Component implements HasSize, HasTheme {
     private final Set<ComponentEventListener<CancelEvent<E>>> cancelListeners = new LinkedHashSet<>();
     private final Set<ComponentEventListener<DeleteEvent<E>>> deleteListeners = new LinkedHashSet<>();
 
+    @Id("save")
+    private Button save;
+	@Id("cancel")
+	private Button cancel;
+	@Id("delete")
+	private Button delete;
+
     private Class<E> beanType;
     private Grid<E> grid;
     private CrudEditor<E> editor;
     private E gridActiveItem;
+
+	public Button getSaveButton() {
+		return save;
+	}
+
+	public Button getCancelButton() {
+		return cancel;
+	}
+
+	public Button getDeleteButton() {
+		return delete;
+	}
 
     /**
      * Instantiates a new Crud using a custom grid.

@@ -62,6 +62,9 @@ public class CrudView extends DemoView {
         // begin-source-example
         // source-example-heading: Basic CRUD
         Crud<Person> crud = new Crud<>(Person.class, createPersonEditor());
+        crud.getDeleteButton().setText("REMOVE");
+	    crud.getCancelButton().setText("STOP IT");
+	    crud.getSaveButton().setVisible(false);
 
         PersonDataProvider dataProvider = new PersonDataProvider();
 

@@ -6,6 +6,7 @@ import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
@@ -63,18 +64,30 @@ public class CrudView extends DemoView {
         // begin-source-example
         // source-example-heading: Basic CRUD
         Crud<Person> crud = new Crud<>(Person.class, createPersonEditor());
-        crud.setToolbar();
         PersonDataProvider dataProvider = new PersonDataProvider();
 
         crud.setDataProvider(dataProvider);
-        crud.addSaveListener(e -> crud.cancelSave());
+        crud.addSaveListener(e -> {
+        	if (e.getItem().getFirstName().isEmpty()) {
+        		crud.cancelSave();
+	        } else {
+		        dataProvider.persist(e.getItem());
+	        }
+        });
         crud.addDeleteListener(e -> dataProvider.delete(e.getItem()));
 
         crud.getGrid().removeColumnByKey("id");
         crud.addThemeVariants(CrudVariant.NO_BORDER);
         // end-source-example
-
-        addCard("Basic CRUD", crud);
+	    Button hideToolbar = new Button("Hide toolbar");
+	    hideToolbar.addClickListener(buttonClickEvent -> crud.setToolbarVisible(!crud.isToolbarVisible()));
+	    Button readOnly = new Button("Read only");
+	    readOnly.addClickListener(buttonClickEvent -> {
+	    	crud.setReadOnly(!crud.isReadOnly());
+	    });
+	    Div layout = new Div();
+	    layout.add(crud, hideToolbar, readOnly);
+        addCard("Basic CRUD", layout);
     }
 
      // NOTE: heading is an unicode space

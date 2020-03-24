@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
  * @param <E> the bean type
  */
 @Tag("vaadin-crud")
-@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-crud", version="1.4.8")
+@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-crud", version="1.5.1")
 @JsModule("@vaadin-component-factory/vcf-enhanced-crud/src/vaadin-crud.js")
 @JsModule("@vaadin-component-factory/vcf-enhanced-crud/src/vaadin-crud-edit-column.js")
 public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, HasTheme {
@@ -90,7 +90,16 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
 	@Id("toolbar")
 	private Div toolbar;
 
+	@Id("save")
+	private Button save;
+	@Id("cancel")
+	private Button cancel;
+	@Id("delete")
+	private Button delete;
+
 	private boolean cancelSave;
+	private boolean readOnly;
+	private boolean toolbarVisible = true;
 
     /**
      * Instantiates a new Crud using a custom grid.
@@ -170,6 +179,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
         ComponentUtil.addListener(this, NewEvent.class, (ComponentEventListener)
                 ((ComponentEventListener<NewEvent<E>>) e -> {
                     try {
+	                    setEditorReadOnly(false);
                         getEditor().setItem(e.getItem() != null ? e.getItem() : getBeanType().newInstance());
                         clearActiveItem();
                     } catch (Exception ex) {
@@ -183,6 +193,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
                 ((ComponentEventListener<EditEvent<E>>) e -> {
                     if (getEditor().getItem() != e.getItem()) {
                         getEditor().setItem(e.getItem(), true);
+	                    setEditorReadOnly(readOnly);
                         setOpened(true);
 
                         if(isEditOnClick() && getGrid() instanceof CrudGrid) {
@@ -254,9 +265,20 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
             setDirty(false);
             event = new EditEvent<>(this, false, item);
         }
+        setEditorReadOnly(readOnly);
         setOpened(true);
         ComponentUtil.fireEvent(this, event);
     }
+
+	private void setEditorReadOnly(boolean readOnly) {
+		save.setVisible(!readOnly);
+		delete.setVisible(!readOnly);
+		cancel.setText("Cancel");
+		if (readOnly) {
+			cancel.setText("Close");
+		}
+		getEditor().setReadOnly(readOnly);
+	}
 
     /**
      * Opens or closes the editor. In most use cases opening or closing the editor
@@ -479,11 +501,20 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
                 .map(e -> e.setAttribute(SLOT_KEY, TOOLBAR_SLOT_NAME))
                 .toArray(Element[]::new);
         getElement().appendChild(newToolbarElements);
-        if (newToolbarElements.length == 0) {
-        	toolbar.getElement().setAttribute("Style", "display: none;");
-        } else {
-	        toolbar.getElement().removeAttribute("Style");
-        }
+		setToolbarVisible(newToolbarElements.length > 0);
+    }
+
+    public void setToolbarVisible(boolean toolbarVisible) {
+    	this.toolbarVisible = toolbarVisible;
+	    if (toolbarVisible) {
+		    toolbar.getElement().removeAttribute("Style");
+	    } else {
+		    toolbar.getElement().setAttribute("Style", "display: none;");
+	    }
+    }
+
+    public boolean isToolbarVisible() {
+    	return toolbarVisible;
     }
 
     /**
@@ -642,7 +673,27 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
                 .setFlexGrow(0);
     }
 
-    private static String createEditColumnTemplate(CrudI18n crudI18n) {
+    public void setReadOnly(boolean readOnly) {
+    	this.readOnly = readOnly;
+    }
+
+    public boolean isReadOnly() {
+    	return readOnly;
+    }
+
+	public Button getDelete() {
+		return delete;
+	}
+
+	public Button getCancel() {
+		return cancel;
+	}
+
+	public Button getSave() {
+		return save;
+	}
+
+	private static String createEditColumnTemplate(CrudI18n crudI18n) {
         return "<vaadin-crud-edit aria-label=\"" + crudI18n.getEditLabel() + "\"></vaadin-crud-edit>";
     }
 
@@ -846,6 +897,10 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
         public SaveEvent(Crud<E> source, boolean fromClient,
                          @EventData(EVENT_PREVENT_DEFAULT_JS) Object ignored) {
             super(source, fromClient);
+        }
+
+        public boolean isNewItem() {
+        	return getSource().getEditor().isNewItem();
         }
     }
 

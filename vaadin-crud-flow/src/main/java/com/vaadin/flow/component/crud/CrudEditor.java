@@ -81,4 +81,8 @@ public interface CrudEditor<E> extends Serializable {
      * @return the user interface
      */
     Component getView();
+
+    void setReadOnly(boolean readOnly);
+
+    boolean isNewItem();
 }

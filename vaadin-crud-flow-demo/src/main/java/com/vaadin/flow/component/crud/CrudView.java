@@ -25,6 +25,7 @@ import com.vaadin.flow.dom.DebouncePhase;
 import com.vaadin.flow.router.Route;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -62,14 +63,11 @@ public class CrudView extends DemoView {
         // begin-source-example
         // source-example-heading: Basic CRUD
         Crud<Person> crud = new Crud<>(Person.class, createPersonEditor());
-        crud.getDeleteButton().setText("REMOVE");
-	    crud.getCancelButton().setText("STOP IT");
-	    crud.getSaveButton().setVisible(false);
-
+        crud.setToolbar();
         PersonDataProvider dataProvider = new PersonDataProvider();
 
         crud.setDataProvider(dataProvider);
-        crud.addSaveListener(e -> dataProvider.persist(e.getItem()));
+        crud.addSaveListener(e -> crud.cancelSave());
         crud.addDeleteListener(e -> dataProvider.delete(e.getItem()));
 
         crud.getGrid().removeColumnByKey("id");
@@ -395,7 +393,9 @@ public class CrudView extends DemoView {
                         .sorted(comparator(query.getFilter().get()));
             }
 
-            return stream.skip(offset).limit(limit);
+            List<Person> result = new ArrayList<>();
+            stream.forEach(person -> result.add(person.clone()));
+            return result.stream().skip(offset).limit(limit);
         }
 
         @Override

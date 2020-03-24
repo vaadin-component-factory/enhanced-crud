@@ -17,20 +17,14 @@ package com.vaadin.flow.component.crud;
  * #L%
  */
 
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.ComponentEvent;
-import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.ComponentUtil;
-import com.vaadin.flow.component.DomEvent;
-import com.vaadin.flow.component.EventData;
-import com.vaadin.flow.component.HasSize;
-import com.vaadin.flow.component.HasTheme;
-import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.editor.Editor;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.data.provider.DataProvider;
@@ -70,7 +64,7 @@ import java.util.stream.Collectors;
  * @param <E> the bean type
  */
 @Tag("vaadin-crud")
-@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-crud", version="1.2.4")
+@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-crud", version="1.4.8")
 @JsModule("@vaadin-component-factory/vcf-enhanced-crud/src/vaadin-crud.js")
 @JsModule("@vaadin-component-factory/vcf-enhanced-crud/src/vaadin-crud-edit-column.js")
 public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, HasTheme {
@@ -88,29 +82,15 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
     private final Set<ComponentEventListener<CancelEvent<E>>> cancelListeners = new LinkedHashSet<>();
     private final Set<ComponentEventListener<DeleteEvent<E>>> deleteListeners = new LinkedHashSet<>();
 
-    @Id("save")
-    private Button save;
-	@Id("cancel")
-	private Button cancel;
-	@Id("delete")
-	private Button delete;
-
     private Class<E> beanType;
     private Grid<E> grid;
     private CrudEditor<E> editor;
     private E gridActiveItem;
 
-	public Button getSaveButton() {
-		return save;
-	}
+	@Id("toolbar")
+	private Div toolbar;
 
-	public Button getCancelButton() {
-		return cancel;
-	}
-
-	public Button getDeleteButton() {
-		return delete;
-	}
+	private boolean cancelSave;
 
     /**
      * Instantiates a new Crud using a custom grid.
@@ -227,6 +207,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
 
         ComponentUtil.addListener(this, SaveEvent.class, (ComponentEventListener)
                 ((ComponentEventListener<SaveEvent<E>>) e -> {
+                	cancelSave = false;
                     if (!getEditor().validate()) {
                         return;
                     }
@@ -234,8 +215,10 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
                     getEditor().writeItemChanges();
                     try {
                         saveListeners.forEach(listener -> listener.onComponentEvent(e));
-                        setOpened(false);
-                        getEditor().clear();
+                        if (!cancelSave) {
+	                        setOpened(false);
+	                        getEditor().clear();
+                        }
                     } finally {
                         if (getGrid().getDataProvider() != null) {
                             getGrid().getDataProvider().refreshAll();
@@ -271,7 +254,6 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
             setDirty(false);
             event = new EditEvent<>(this, false, item);
         }
-
         setOpened(true);
         ComponentUtil.fireEvent(this, event);
     }
@@ -497,6 +479,11 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
                 .map(e -> e.setAttribute(SLOT_KEY, TOOLBAR_SLOT_NAME))
                 .toArray(Element[]::new);
         getElement().appendChild(newToolbarElements);
+        if (newToolbarElements.length == 0) {
+        	toolbar.getElement().setAttribute("Style", "display: none;");
+        } else {
+	        toolbar.getElement().removeAttribute("Style");
+        }
     }
 
     /**
@@ -680,6 +667,10 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
     public static boolean hasEditColumn(Grid grid) {
         return grid.getColumnByKey(EDIT_COLUMN_KEY) != null;
     }
+
+	public void cancelSave() {
+    	cancelSave = true;
+	}
 
     /**
      * The base class for all Crud events.

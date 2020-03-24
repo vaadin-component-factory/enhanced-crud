@@ -30,7 +30,7 @@ import com.vaadin.flow.data.binder.ValidationException;
  */
 public class BinderCrudEditor<E> implements CrudEditor<E> {
 
-    private final Binder<E> binder;
+    protected final Binder<E> binder;
     private final Component view;
     private E item;
 
@@ -102,4 +102,5 @@ public class BinderCrudEditor<E> implements CrudEditor<E> {
     public Component getView() {
         return view;
     }
+
 }

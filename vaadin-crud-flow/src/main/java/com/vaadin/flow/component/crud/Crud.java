@@ -517,7 +517,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
     public boolean isToolbarVisible() {
     	return toolbarVisible;
     }
-    
+
     /**
      * Sets the internationalized messages to be used by this crud instance.
      *

@@ -75,16 +75,19 @@ public class CrudView extends DemoView {
 	        }
         });
         crud.addDeleteListener(e -> dataProvider.delete(e.getItem()));
+        crud.getDelete().setText("Restore");
+        crud.getSave().getElement().setAttribute("Style", "display: none;");
+        crud.getCancel().addClickListener(buttonClickEvent -> crud.setToolbarVisible(!crud.isToolbarVisible()));
 
         crud.getGrid().removeColumnByKey("id");
         crud.addThemeVariants(CrudVariant.NO_BORDER);
-        // end-source-example
 	    Button hideToolbar = new Button("Hide toolbar");
 	    hideToolbar.addClickListener(buttonClickEvent -> crud.setToolbarVisible(!crud.isToolbarVisible()));
 	    Button readOnly = new Button("Read only");
 	    readOnly.addClickListener(buttonClickEvent -> {
 	    	crud.setReadOnly(!crud.isReadOnly());
 	    });
+	    // end-source-example
 	    Div layout = new Div();
 	    layout.add(crud, hideToolbar, readOnly);
         addCard("Basic CRUD", layout);

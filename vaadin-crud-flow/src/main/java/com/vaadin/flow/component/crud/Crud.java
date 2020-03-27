@@ -34,6 +34,7 @@ import com.vaadin.flow.internal.JsonSerializer;
 import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.templatemodel.TemplateModel;
 import elemental.json.JsonObject;
+import org.omg.CORBA.PUBLIC_MEMBER;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -504,8 +505,8 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
 		setToolbarVisible(newToolbarElements.length > 0);
     }
 
-    public void setToolbarVisible(boolean toolbarVisible) {
-    	this.toolbarVisible = toolbarVisible;
+    public void setToolbarVisible(boolean visible) {
+    	this.toolbarVisible = visible;
 	    if (toolbarVisible) {
 		    toolbar.getElement().removeAttribute("Style");
 	    } else {
@@ -516,7 +517,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
     public boolean isToolbarVisible() {
     	return toolbarVisible;
     }
-
+    
     /**
      * Sets the internationalized messages to be used by this crud instance.
      *

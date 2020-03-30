@@ -34,7 +34,6 @@ import com.vaadin.flow.internal.JsonSerializer;
 import com.vaadin.flow.shared.Registration;
 import com.vaadin.flow.templatemodel.TemplateModel;
 import elemental.json.JsonObject;
-import org.omg.CORBA.PUBLIC_MEMBER;
 
 import java.util.Arrays;
 import java.util.LinkedHashSet;

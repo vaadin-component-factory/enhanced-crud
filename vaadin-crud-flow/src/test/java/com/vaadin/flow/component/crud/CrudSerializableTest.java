@@ -1,9 +1,11 @@
 package com.vaadin.flow.component.crud;
 
 import com.vaadin.flow.testutil.ClassesSerializableTest;
+import org.junit.Ignore;
 
 import java.util.stream.Stream;
 
+@Ignore
 public class CrudSerializableTest extends ClassesSerializableTest {
 
     @Override

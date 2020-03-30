@@ -75,9 +75,6 @@ public class CrudView extends DemoView {
 	        }
         });
         crud.addDeleteListener(e -> dataProvider.delete(e.getItem()));
-        crud.getDelete().setText("Restore");
-        crud.getSave().getElement().setAttribute("Style", "display: none;");
-        crud.getCancel().addClickListener(buttonClickEvent -> crud.setToolbarVisible(!crud.isToolbarVisible()));
 
         crud.getGrid().removeColumnByKey("id");
         crud.addThemeVariants(CrudVariant.NO_BORDER);
@@ -87,9 +84,16 @@ public class CrudView extends DemoView {
 	    readOnly.addClickListener(buttonClickEvent -> {
 	    	crud.setReadOnly(!crud.isReadOnly());
 	    });
+	    Button changeEditorButtons = new Button("Change Editor Buttons");
+	    changeEditorButtons.addClickListener(buttonClickEvent -> {
+		    crud.getDelete().setText("Restore");
+		    crud.getCancel().setText("Quit");
+		    crud.getSave().getElement().setAttribute("Style", "display: none;");
+		    crud.getCancel().addClickListener(clickEvent -> crud.setToolbarVisible(!crud.isToolbarVisible()));
+	    });
 	    // end-source-example
 	    Div layout = new Div();
-	    layout.add(crud, hideToolbar, readOnly);
+	    layout.add(crud, hideToolbar, readOnly, changeEditorButtons);
         addCard("Basic CRUD", layout);
     }
 

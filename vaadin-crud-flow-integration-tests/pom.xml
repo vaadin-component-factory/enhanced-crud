@@ -5,11 +5,11 @@
 
     <parent>
         <groupId>com.vaadin</groupId>
-        <artifactId>vaadin-crud-flow-root</artifactId>
-        <version>mvn install -Pdirectory</version>
+        <artifactId>vaadin-enhanced-crud-flow-root</artifactId>
+        <version>1.0.0</version>
     </parent>
 
-    <artifactId>vaadin-crud-flow-integration-tests</artifactId>
+    <artifactId>vaadin-enhanced-crud-flow-integration-tests</artifactId>
     <packaging>war</packaging>
 
     <name>Vaadin Crud Integration Tests</name>

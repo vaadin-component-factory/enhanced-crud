@@ -10,8 +10,8 @@
         <relativePath />
     </parent>
 
-    <artifactId>vaadin-crud-flow-root</artifactId>
-    <version>mvn install -Pdirectory</version>
+    <artifactId>vaadin-enhanced-crud-flow-root</artifactId>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
 
     <name>Vaadin Crud Root</name>

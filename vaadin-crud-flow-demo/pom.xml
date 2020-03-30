@@ -6,11 +6,11 @@
 
     <parent>
         <groupId>com.vaadin</groupId>
-        <artifactId>vaadin-crud-flow-root</artifactId>
-        <version>mvn install -Pdirectory</version>
+        <artifactId>vaadin-enhanced-crud-flow-root</artifactId>
+        <version>1.0.0</version>
     </parent>
 
-    <artifactId>vaadin-crud-flow-demo</artifactId>
+    <artifactId>vaadin-enhanced-crud-flow-demo</artifactId>
     <packaging>${packaging.type}</packaging>
 
     <name>Vaadin Crud Flow Demo</name>

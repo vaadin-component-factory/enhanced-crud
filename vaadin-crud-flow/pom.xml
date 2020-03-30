@@ -5,11 +5,11 @@
 
     <parent>
         <groupId>com.vaadin</groupId>
-        <artifactId>vaadin-crud-flow-root</artifactId>
-        <version>mvn install -Pdirectory</version>
+        <artifactId>vaadin-enhanced-crud-flow-root</artifactId>
+        <version>1.0.0</version>
     </parent>
 
-    <artifactId>vaadin-crud-flow</artifactId>
+    <artifactId>vaadin-enhanced-crud-flow</artifactId>
     <packaging>jar</packaging>
 
     <name>Vaadin Crud</name>
@@ -93,7 +93,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
-                        <Bundle-SymbolicName>${project.groupId}.flow.component.crud</Bundle-SymbolicName>
+                        <Bundle-SymbolicName>${project.groupId}.flow.component.enhanced-crud</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
                         <Export-Package>com.vaadin.flow.component.*;-noimport:=true</Export-Package>
                         <Private-Package></Private-Package>

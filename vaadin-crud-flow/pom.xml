@@ -4,15 +4,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.vaadin</groupId>
-        <artifactId>vaadin-enhanced-crud-flow-root</artifactId>
+        <groupId>com.vaadin.componentfactory</groupId>
+        <artifactId>enhanced-crud-flow-root</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>vaadin-enhanced-crud-flow</artifactId>
+    <artifactId>enhanced-crud-flow</artifactId>
     <packaging>jar</packaging>
 
-    <name>Vaadin Crud</name>
+    <name>Enhanced Crud Flow</name>
 
     <dependencies>
         <!--Provided scoped-->
@@ -93,9 +93,9 @@
                 <configuration>
                     <instructions>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
-                        <Bundle-SymbolicName>${project.groupId}.flow.component.enhanced-crud</Bundle-SymbolicName>
+                        <Bundle-SymbolicName>${project.groupId}.enhanced-crud</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
-                        <Export-Package>com.vaadin.flow.component.*;-noimport:=true</Export-Package>
+                        <Export-Package>com.vaadin.componentfactory.*;-noimport:=true</Export-Package>
                         <Private-Package></Private-Package>
                         <Bundle-Activator></Bundle-Activator>
                         <Bundle-Version>${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}</Bundle-Version>
@@ -105,7 +105,7 @@
                         <Vaadin-Package-Version>1</Vaadin-Package-Version>
                         <!-- Implementation-Title and Implementation-Version
                             come from the POM by default -->
-                        <Implementation-Title>Vaadin Crud</Implementation-Title>
+                        <Implementation-Title>Enhanced Crud</Implementation-Title>
                         <_removeheaders>Built-By</_removeheaders>
                     </instructions>
                 </configuration>

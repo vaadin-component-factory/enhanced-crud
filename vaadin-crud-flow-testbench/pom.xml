@@ -4,15 +4,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>vaadin-enhanced-crud-flow-root</artifactId>
-        <groupId>com.vaadin</groupId>
+        <artifactId>enhanced-crud-flow-root</artifactId>
+        <groupId>com.vaadincomponentfactory</groupId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>vaadin-enhanced-crud-testbench</artifactId>
+    <artifactId>enhanced-crud-testbench</artifactId>
     <packaging>jar</packaging>
 
-    <name>Vaadin Crud Testbench API</name>
+    <name>Enhanced Crud Testbench API</name>
 
     <dependencies>
         <dependency>

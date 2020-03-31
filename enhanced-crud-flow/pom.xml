@@ -12,7 +12,7 @@
     <artifactId>enhanced-crud-flow</artifactId>
     <packaging>jar</packaging>
 
-    <name>Enhanced Crud Flow</name>
+    <name>Enhanced Crud</name>
 
     <dependencyManagement>
         <dependencies>
@@ -108,7 +108,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
-                        <Bundle-SymbolicName>${project.groupId}.enhanced-crud</Bundle-SymbolicName>
+                        <Bundle-SymbolicName>${project.groupId}.enhancedcrud</Bundle-SymbolicName>
                         <Import-Package>*</Import-Package>
                         <Export-Package>com.vaadin.componentfactory.*;-noimport:=true</Export-Package>
                         <Private-Package></Private-Package>
@@ -121,6 +121,8 @@
                         <!-- Implementation-Title and Implementation-Version
                             come from the POM by default -->
                         <Implementation-Title>Enhanced Crud</Implementation-Title>
+                        <Implementation-Vendor>Vaadin Ltd.</Implementation-Vendor>
+                        <Implementation-Version>${project.version}</Implementation-Version>
                         <_removeheaders>Built-By</_removeheaders>
                     </instructions>
                 </configuration>

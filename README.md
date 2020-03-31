@@ -16,7 +16,7 @@ Add Crud to your project
 <dependencies>
   <dependency>
     <groupId>com.vaadin</groupId>
-    <artifactId>vaadin-crud-flow</artifactId>
+    <artifactId>enhanced-crud-flow</artifactId>
     <version>${vaadin.crud.version}</version>
   </dependency>
 </dependencies>
@@ -104,7 +104,7 @@ Crud<Person> crud = new Crud<>(Person.class, grid, editor);
 Clone the project in GitHub (or fork it if you plan on contributing)
 
 ```
-git clone git@github.com:vaadin/vaadin-crud-flow.git
+git clone git@github.com:vaadin-component-factory/enhanced-crud.git
 ```
 
 To build and install the project into the local repository run 
@@ -119,5 +119,5 @@ To compile and run demos locally execute
 
 ```
 mvn compile
-mvn -pl vaadin-crud-flow-demo -Pwar jetty:run
+mvn -pl enhanced-crud-flow-demo -Pwar jetty:run
 ```

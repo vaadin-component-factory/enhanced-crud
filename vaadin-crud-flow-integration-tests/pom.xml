@@ -4,15 +4,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.vaadin</groupId>
-        <artifactId>vaadin-enhanced-crud-flow-root</artifactId>
+        <groupId>com.vaadin.componentfactory</groupId>
+        <artifactId>enhanced-crud-flow-root</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>vaadin-enhanced-crud-flow-integration-tests</artifactId>
+    <artifactId>enhanced-crud-flow-integration-tests</artifactId>
     <packaging>war</packaging>
 
-    <name>Vaadin Crud Integration Tests</name>
+    <name>Enhanced Crud Integration Tests</name>
 
     <properties>
         <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -31,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-crud-testbench</artifactId>
+            <artifactId>enhanced-crud-testbench</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
@@ -57,7 +57,7 @@
         <!--System under test-->
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-crud-flow</artifactId>
+            <artifactId>enhanced-crud-flow</artifactId>
             <version>${project.version}</version>
         </dependency>
 

@@ -1,4 +1,4 @@
-package com.vaadin.flow.component.crud;
+package com.vaadin.componentfactory.enhancedcrud;
 
 import com.vaadin.componentfactory.enhancedcrud.Crud;
 import com.vaadin.componentfactory.enhancedcrud.CrudEditor;

@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
  * @param <E> the bean type
  */
 @Tag("vaadin-crud")
-@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-crud", version="1.5.1")
+@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-crud", version="1.5.4")
 @JsModule("@vaadin-component-factory/vcf-enhanced-crud/src/vaadin-crud.js")
 @JsModule("@vaadin-component-factory/vcf-enhanced-crud/src/vaadin-crud-edit-column.js")
 public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, HasTheme {

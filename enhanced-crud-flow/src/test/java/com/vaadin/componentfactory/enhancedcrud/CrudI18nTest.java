@@ -1,4 +1,4 @@
-package com.vaadin.flow.component.crud;
+package com.vaadin.componentfactory.enhancedcrud;
 
 import org.junit.Assert;
 import org.junit.Test;

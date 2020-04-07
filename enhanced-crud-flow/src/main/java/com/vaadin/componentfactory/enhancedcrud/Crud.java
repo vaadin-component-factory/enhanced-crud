@@ -79,6 +79,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
     private final Set<ComponentEventListener<NewEvent<E>>> newListeners = new LinkedHashSet<>();
     private final Set<ComponentEventListener<EditEvent<E>>> editListeners = new LinkedHashSet<>();
     private final Set<ComponentEventListener<SaveEvent<E>>> saveListeners = new LinkedHashSet<>();
+    private final Set<ComponentEventListener<PreSaveEvent<E>>> preSaveListeners = new LinkedHashSet<>();
     private final Set<ComponentEventListener<CancelEvent<E>>> cancelListeners = new LinkedHashSet<>();
     private final Set<ComponentEventListener<DeleteEvent<E>>> deleteListeners = new LinkedHashSet<>();
 
@@ -223,17 +224,20 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
                         return;
                     }
 
-                    getEditor().writeItemChanges();
-                    try {
-                        saveListeners.forEach(listener -> listener.onComponentEvent(e));
-                        if (!cancelSave) {
-	                        setOpened(false);
-	                        getEditor().clear();
-                        }
-                    } finally {
-                        if (getGrid().getDataProvider() != null) {
-                            getGrid().getDataProvider().refreshAll();
-                        }
+                    preSaveListeners.forEach(listener -> listener.onComponentEvent(new PreSaveEvent(e.getSource(),e.isFromClient())));
+                    if (!cancelSave) {
+                    	getEditor().writeItemChanges();
+                    	try {
+                    		saveListeners.forEach(listener -> listener.onComponentEvent(e));
+                            if (!cancelSave) {
+                            	setOpened(false);
+                    			getEditor().clear();
+                            }
+                    	} finally {
+                    		if (getGrid().getDataProvider() != null) {
+                    			getGrid().getDataProvider().refreshAll();
+                    		}
+                    	}
                     }
                 }));
 
@@ -605,6 +609,22 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
     }
 
     /**
+     * Registers a listener to be notified when the user tries to save a new item
+     * or modifications to an existing item. PreSaveEvent is invoked before SaveEvent
+     * and before values are commited to the bean. If user calls cancelSave in this
+     * event, the SaveEvent is skipped.
+     * 
+     * @see Crud#cancelSave
+     * 
+     * @param listener a listener to be notified
+     * @return a handle that can be used to unregister the listener
+     */
+    public Registration addPreSaveListener(ComponentEventListener<PreSaveEvent<E>> listener) {
+        preSaveListeners.add(listener);
+        return () -> preSaveListeners.remove(listener);
+    }
+    
+    /**
      * Registers a listener to be notified when the user cancels a new item creation or existing item
      * modification in progress.
      *
@@ -719,8 +739,12 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
         return grid.getColumnByKey(EDIT_COLUMN_KEY) != null;
     }
 
+    /**
+     * If called in PreSaveEvent the SaveEvent is not handled.
+     * 
+     */
 	public void cancelSave() {
-    	cancelSave = true;
+    	this.cancelSave = true;
 	}
 
     /**
@@ -898,12 +922,28 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
                          @EventData(EVENT_PREVENT_DEFAULT_JS) Object ignored) {
             super(source, fromClient);
         }
-
-        public boolean isNewItem() {
-        	return getSource().getEditor().isNewItem();
-        }
     }
 
+    /**
+     * Event fired when the user tries to save a new item or modifications to an existing item.
+     * This event is fired before SaveEvent and before values has been committed to the bean.
+     * 
+     * @param <E> the bean type
+     */
+    public static class PreSaveEvent<E> extends CrudEvent<E> {
+
+        /**
+         * Creates a new event using the given source and indicator whether the
+         * event originated from the client side or the server side.
+         *
+         * @param source     the source component
+         * @param fromClient <code>true</code> if the event originated from the client
+         */
+        public PreSaveEvent(Crud<E> source, boolean fromClient) {
+            super(source, fromClient);
+        }
+    }   
+    
     /**
      * Determines whether an item presented for editing is to be treated
      * as a new item or an existing item.

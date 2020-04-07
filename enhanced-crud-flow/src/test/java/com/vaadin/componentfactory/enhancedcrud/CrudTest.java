@@ -112,10 +112,5 @@ public class CrudTest {
 	    public void setReadOnly(boolean readOnly) {
 
 	    }
-
-	    @Override
-	    public boolean isNewItem() {
-		    return false;
-	    }
     }
 }

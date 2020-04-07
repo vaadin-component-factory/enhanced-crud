@@ -107,10 +107,9 @@ public class BinderCrudEditor<E> implements CrudEditor<E> {
 	public void setReadOnly(boolean readOnly) {
 		binder.setReadOnly(readOnly);
 	}
-
-	@Override
-	public boolean isNewItem() {
-		return false;
+	
+	public Binder<E> getBinder() {
+		return binder;
 	}
-
+	
 }

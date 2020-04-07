@@ -84,5 +84,4 @@ public interface CrudEditor<E> extends Serializable {
 
     void setReadOnly(boolean readOnly);
 
-    boolean isNewItem();
 }

@@ -43,6 +43,7 @@ import static java.util.stream.Collectors.toList;
 @Route("vaadin-crud")
 public class CrudView extends DemoView {
 
+	
     @Override
     protected void initView() {	
         basicCrud();
@@ -57,22 +58,27 @@ public class CrudView extends DemoView {
         customGrid();
         customSearch();
         addCard("Example Classes",
-                new Label("These objects are used in the examples above"));
+        new Label("These objects are used in the examples above"));
     }
 
     private void basicCrud() {
         // begin-source-example
         // source-example-heading: Basic CRUD
+
         Crud<Person> crud = new Crud<>(Person.class, createPersonEditor());
         PersonDataProvider dataProvider = new PersonDataProvider();
 
         crud.setDataProvider(dataProvider);
-        crud.addSaveListener(e -> {
-        	if (e.getItem().getFirstName().isEmpty()) {
+        crud.addPreSaveListener(e -> {
+        	BinderCrudEditor<Person> crudEditor = (BinderCrudEditor<Person>) crud.getEditor();
+        	TextField textField = (TextField) crudEditor.getBinder().getBinding("firstName").get().getField();
+        	if (textField.getValue().equals("noname")) {
         		crud.cancelSave();
-	        } else {
-		        dataProvider.persist(e.getItem());
+        		return;
 	        }
+        });
+        crud.addSaveListener(e -> {
+		    dataProvider.persist(e.getItem());
         });
         crud.addDeleteListener(e -> dataProvider.delete(e.getItem()));
 
@@ -97,16 +103,17 @@ public class CrudView extends DemoView {
         addCard("Basic CRUD", layout);
     }
 
-     // NOTE: heading is an unicode space
+    // NOTE: heading is an unicode space
      // begin-source-example
      // source-example-heading:  
     private CrudEditor<Person> createPersonEditor() {
         TextField firstName = new TextField("First name");
         TextField lastName = new TextField("Last name");
+
         FormLayout form = new FormLayout(firstName, lastName);
 
         Binder<Person> binder = new Binder<>(Person.class);
-        binder.bind(firstName, Person::getFirstName, Person::setFirstName);
+        binder.forField(firstName).asRequired().bind(Person::getFirstName, Person::setFirstName);
         binder.bind(lastName, Person::getLastName, Person::setLastName);
 
         return new BinderCrudEditor<>(binder, form);

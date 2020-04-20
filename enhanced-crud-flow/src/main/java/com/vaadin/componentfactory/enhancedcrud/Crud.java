@@ -183,6 +183,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
 	                    setEditorReadOnly(false);
                         getEditor().setItem(e.getItem() != null ? e.getItem() : getBeanType().newInstance());
                         clearActiveItem();
+                        setClientIsNew(true);
                     } catch (Exception ex) {
                         throw new RuntimeException("Unable to instantiate new bean", ex);
                     }
@@ -197,6 +198,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
 	                    setEditorReadOnly(readOnly);
                         setOpened(true);
 
+                        setClientIsNew(false);
                         if(isEditOnClick() && getGrid() instanceof CrudGrid) {
                             getGrid().select(e.getItem());
                         }
@@ -272,6 +274,10 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
         setEditorReadOnly(readOnly);
         setOpened(true);
         ComponentUtil.fireEvent(this, event);
+    }
+
+    private void setClientIsNew(boolean isNew) {
+        getElement().setProperty("__isNew", isNew);
     }
 
 	private void setEditorReadOnly(boolean readOnly) {

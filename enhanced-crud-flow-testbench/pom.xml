@@ -6,7 +6,7 @@
     <parent>
         <artifactId>enhanced-crud-flow-root</artifactId>
         <groupId>com.vaadin.componentfactory</groupId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
     </parent>
 
     <artifactId>enhanced-crud-testbench</artifactId>

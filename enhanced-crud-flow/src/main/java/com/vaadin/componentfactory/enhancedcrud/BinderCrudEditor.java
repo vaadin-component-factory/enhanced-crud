@@ -111,5 +111,5 @@ public class BinderCrudEditor<E> implements CrudEditor<E> {
 	public Binder<E> getBinder() {
 		return binder;
 	}
-	
+
 }

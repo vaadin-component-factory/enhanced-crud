@@ -180,10 +180,10 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
         ComponentUtil.addListener(this, NewEvent.class, (ComponentEventListener)
                 ((ComponentEventListener<NewEvent<E>>) e -> {
                     try {
-	                    setEditorReadOnly(false);
+                        setClientIsNew(true);
+	                    setEditorReadOnly(false,EditMode.NEW_ITEM);
                         getEditor().setItem(e.getItem() != null ? e.getItem() : getBeanType().newInstance());
                         clearActiveItem();
-                        setClientIsNew(true);
                     } catch (Exception ex) {
                         throw new RuntimeException("Unable to instantiate new bean", ex);
                     }
@@ -194,11 +194,11 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
         ComponentUtil.addListener(this, EditEvent.class, (ComponentEventListener)
                 ((ComponentEventListener<EditEvent<E>>) e -> {
                     if (getEditor().getItem() != e.getItem()) {
-                        getEditor().setItem(e.getItem(), true);
-	                    setEditorReadOnly(readOnly);
-                        setOpened(true);
-
                         setClientIsNew(false);
+                        getEditor().setItem(e.getItem(), true);
+	                    setEditorReadOnly(readOnly,EditMode.EXISTING_ITEM);
+
+	                    setOpened(true);
                         if(isEditOnClick() && getGrid() instanceof CrudGrid) {
                             getGrid().select(e.getItem());
                         }
@@ -214,6 +214,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
                             (this.gridActiveItem != null && this.getEditor().getItem() == this.gridActiveItem)
                             || this.gridActiveItem == null) {
                         setOpened(false);
+                        delete.setVisible(true);
                         getEditor().clear();
                         clearActiveItem();
                     }
@@ -265,13 +266,13 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
     public void edit(E item, EditMode editMode) {
         final CrudEvent<E> event;
         if (editMode == EditMode.NEW_ITEM) {
-            getElement().setProperty("__isNew", true);
+			getElement().setProperty("__isNew", true);
             event = new NewEvent<>(this, false, item, null);
         } else {
             setDirty(false);
             event = new EditEvent<>(this, false, item);
         }
-        setEditorReadOnly(readOnly);
+        setEditorReadOnly(readOnly, editMode);
         setOpened(true);
         ComponentUtil.fireEvent(this, event);
     }
@@ -280,9 +281,12 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
         getElement().setProperty("__isNew", isNew);
     }
 
-	private void setEditorReadOnly(boolean readOnly) {
+	private void setEditorReadOnly(boolean readOnly, EditMode editMode) {
 		save.setVisible(!readOnly);
 		delete.setVisible(!readOnly);
+		if (editMode == EditMode.NEW_ITEM) {
+			delete.setVisible(false);
+		}
 		cancel.setText("Cancel");
 		if (readOnly) {
 			cancel.setText("Close");
@@ -296,9 +300,11 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
      *
      * @param opened true to open or false to close
      */
+
     public void setOpened(boolean opened) {
-        getElement().callFunction("set", "editorOpened", opened);
+        getElement().callJsFunction("set", "editorOpened", opened);
     }
+
 
     /**
      * Set the dirty state of the Crud.

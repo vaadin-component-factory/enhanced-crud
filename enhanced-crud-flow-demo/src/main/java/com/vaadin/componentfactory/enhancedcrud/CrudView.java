@@ -43,7 +43,6 @@ import static java.util.stream.Collectors.toList;
 @Route("vaadin-crud")
 public class CrudView extends DemoView {
 
-	
     @Override
     protected void initView() {	
         basicCrud();
@@ -69,37 +68,66 @@ public class CrudView extends DemoView {
         PersonDataProvider dataProvider = new PersonDataProvider();
 
         crud.setDataProvider(dataProvider);
+
+        // Use cancelEdit in PreSaveEvent
+        // PreSaveEvent is dispatched before editor writes the bean
         crud.addPreSaveListener(e -> {
         	BinderCrudEditor<Person> crudEditor = (BinderCrudEditor<Person>) crud.getEditor();
-        	TextField textField = (TextField) crudEditor.getBinder().getBinding("firstName").get().getField();
+        	TextField textField = (TextField) crudEditor.getBinder().getFields().findFirst().get();
         	if (textField.getValue().equals("noname")) {
         		crud.cancelSave();
-        		return;
 	        }
         });
         crud.addSaveListener(e -> {
-		    dataProvider.persist(e.getItem());
+            dataProvider.persist(e.getItem());
         });
         crud.addDeleteListener(e -> dataProvider.delete(e.getItem()));
 
         crud.getGrid().removeColumnByKey("id");
         crud.addThemeVariants(CrudVariant.NO_BORDER);
-	    Button hideToolbar = new Button("Hide toolbar");
-	    hideToolbar.addClickListener(buttonClickEvent -> crud.setToolbarVisible(!crud.isToolbarVisible()));
-	    Button readOnly = new Button("Read only");
-	    readOnly.addClickListener(buttonClickEvent -> {
-	    	crud.setReadOnly(!crud.isReadOnly());
-	    });
-	    Button changeEditorButtons = new Button("Change Editor Buttons");
-	    changeEditorButtons.addClickListener(buttonClickEvent -> {
-		    crud.getDelete().setText("Restore");
-		    crud.getCancel().setText("Quit");
-		    crud.getSave().getElement().setAttribute("Style", "display: none;");
-		    crud.getCancel().addClickListener(clickEvent -> crud.setToolbarVisible(!crud.isToolbarVisible()));
-	    });
+
+        // Toggle display of toolbar
+        Button hideToolbar = new Button("Hide toolbar");
+        hideToolbar.addClickListener(buttonClickEvent -> crud.setToolbarVisible(!crud.isToolbarVisible()));
+
+        // Set the whole Grid and Editor to be read only, in this mode
+        // dialog is also not editable and show only close button
+        Button readOnly = new Button("Read only");
+        readOnly.addClickListener(buttonClickEvent -> {
+            crud.setReadOnly(!crud.isReadOnly());
+        });
+
+        // There are getters for the buttons, so that they can be modified
+        // individually
+        Button changeEditorButtons = new Button("Change Editor Buttons");
+        changeEditorButtons.addClickListener(buttonClickEvent -> {
+            crud.getDelete().setText("Restore");
+            crud.getCancel().setText("Quit");
+            crud.getSave().getElement().setAttribute("Style", "display: none;");
+            crud.getCancel().addClickListener(clickEvent -> crud.setToolbarVisible(!crud.isToolbarVisible()));
+        });
+
+        // Remove edit column and open editor by click listener
+        Button changeEditorOpening = new Button("Change Editor Opening");
+        changeEditorOpening.addClickListener(buttonClickEvent -> {
+            crud.getGrid().removeColumnByKey("vaadin-crud-edit-column");
+            crud.getGrid().addItemClickListener(e -> {
+                if (e.getItem().getLastName() != null && !e.getItem().getLastName().isEmpty())
+                    crud.edit(e.getItem(), Crud.EditMode.EXISTING_ITEM);
+            });
+        });
+
+        // There are getters for the buttons, so that they can hidden 
+        // individually
+        Button disableDelete = new Button("Disable Delete");
+        disableDelete.addClickListener(buttonClickEvent -> {
+            crud.addEditListener(event -> {
+                crud.getDelete().setVisible(false);
+            });
+        });
 	    // end-source-example
-	    Div layout = new Div();
-	    layout.add(crud, hideToolbar, readOnly, changeEditorButtons);
+        Div layout = new Div();
+        layout.add(crud, hideToolbar, readOnly, changeEditorButtons,changeEditorOpening,disableDelete);
         addCard("Basic CRUD", layout);
     }
 
@@ -107,12 +135,13 @@ public class CrudView extends DemoView {
      // begin-source-example
      // source-example-heading:  
     private CrudEditor<Person> createPersonEditor() {
+        Binder<Person> binder = new Binder<>(Person.class);
+    	
         TextField firstName = new TextField("First name");
         TextField lastName = new TextField("Last name");
 
         FormLayout form = new FormLayout(firstName, lastName);
 
-        Binder<Person> binder = new Binder<>(Person.class);
         binder.forField(firstName).asRequired().bind(Person::getFirstName, Person::setFirstName);
         binder.bind(lastName, Person::getLastName, Person::setLastName);
 

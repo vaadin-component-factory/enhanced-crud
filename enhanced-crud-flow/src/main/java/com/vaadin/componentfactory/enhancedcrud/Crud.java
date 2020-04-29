@@ -98,8 +98,8 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
 	@Id("delete")
 	private Button delete;
 
-	private boolean cancelSave;
-	private boolean readOnly;
+	private boolean cancelSave = false;
+	private boolean readOnly = false;
 	private boolean toolbarVisible = true;
 
     /**

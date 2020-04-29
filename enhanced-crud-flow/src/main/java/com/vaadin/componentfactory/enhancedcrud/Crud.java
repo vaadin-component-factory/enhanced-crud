@@ -193,7 +193,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
 
         ComponentUtil.addListener(this, EditEvent.class, (ComponentEventListener)
                 ((ComponentEventListener<EditEvent<E>>) e -> {
-                    if (getEditor().getItem() != e.getItem()) {
+                    if (getEditor().getItem() != e.getItem() && e.isFromClient()) {
                         setClientIsNew(false);
                         getEditor().setItem(e.getItem(), true);
 	                    setEditorReadOnly(readOnly,EditMode.EXISTING_ITEM);

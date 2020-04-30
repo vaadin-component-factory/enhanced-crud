@@ -106,15 +106,11 @@ public class CrudView extends DemoView {
             crud.getSave().getElement().setAttribute("Style", "display: none;");
             crud.getCancel().addClickListener(clickEvent -> crud.setToolbarVisible(!crud.isToolbarVisible()));
         });
-
+        
         // Remove edit column and open editor by click listener
         Button changeEditorOpening = new Button("Change Editor Opening");
         changeEditorOpening.addClickListener(buttonClickEvent -> {
-            crud.getGrid().removeColumnByKey("vaadin-crud-edit-column");
-            crud.getGrid().addItemClickListener(e -> {
-                if (e.getItem().getLastName() != null && !e.getItem().getLastName().isEmpty())
-                    crud.edit(e.getItem(), Crud.EditMode.EXISTING_ITEM);
-            });
+        	crud.setEditOnClick(!crud.isEditOnClick());
         });
 
         // There are getters for the buttons, so that they can hidden 
@@ -131,6 +127,13 @@ public class CrudView extends DemoView {
         addCard("Basic CRUD", layout);
     }
 
+    private Grid<Person> createGrid() {
+        Grid<Person> grid = new Grid<>();
+        grid.addColumn(Person::getFirstName).setHeader("firstName");
+        grid.addColumn(Person::getLastName).setHeader("lastName");
+        return grid;
+    }    
+    
     // NOTE: heading is an unicode space
      // begin-source-example
      // source-example-heading:  

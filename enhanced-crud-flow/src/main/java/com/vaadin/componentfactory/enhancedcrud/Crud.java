@@ -210,8 +210,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
         ComponentUtil.addListener(this, CancelEvent.class, (ComponentEventListener)
                 ((ComponentEventListener<CancelEvent<E>>) e -> {
                     cancelListeners.forEach(listener -> listener.onComponentEvent(e));
-                    if (
-                            (this.gridActiveItem != null && this.getEditor().getItem() == this.gridActiveItem)
+                    if ((this.gridActiveItem != null && this.getEditor().getItem() == this.gridActiveItem)
                             || this.gridActiveItem == null) {
                         setOpened(false);
                         delete.setVisible(true);
@@ -234,6 +233,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
                     		saveListeners.forEach(listener -> listener.onComponentEvent(e));
                             if (!cancelSave) {
                             	setOpened(false);
+                                delete.setVisible(true);
                     			getEditor().clear();
                             }
                     	} finally {

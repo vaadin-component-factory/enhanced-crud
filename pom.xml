@@ -5,7 +5,7 @@
 
     <groupId>com.vaadin.componentfactory</groupId>
     <artifactId>enhanced-crud-flow-root</artifactId>
-    <version>1.1.4</version>
+    <version>1.1.5</version>
     <packaging>pom</packaging>
 
     <name>Enhanced Crud Flow Root</name>
@@ -25,8 +25,8 @@
     </licenses>
 
     <properties>
-    	<vaadin.version>14.1.20</vaadin.version>
-    	<flow.version>2.1.6</flow.version>
+    	<vaadin.version>14.1.28</vaadin.version>
+    	<flow.version>2.1.9</flow.version>
         <jetty.plugin.version>9.4.11.v20180605</jetty.plugin.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>

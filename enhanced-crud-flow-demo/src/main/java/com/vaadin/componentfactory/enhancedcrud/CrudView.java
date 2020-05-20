@@ -83,6 +83,11 @@ public class CrudView extends DemoView {
         });
         crud.addDeleteListener(e -> dataProvider.delete(e.getItem()));
 
+        // Prefill new item
+        crud.addNewListener(e -> {
+        	e.getItem().setFirstName("noname");
+        	crud.getEditor().setItem(e.getItem());
+        });
         crud.getGrid().removeColumnByKey("id");
         crud.addThemeVariants(CrudVariant.NO_BORDER);
 
@@ -146,7 +151,7 @@ public class CrudView extends DemoView {
         FormLayout form = new FormLayout(firstName, lastName);
 
         binder.forField(firstName).asRequired().bind(Person::getFirstName, Person::setFirstName);
-        binder.bind(lastName, Person::getLastName, Person::setLastName);
+        binder.forField(lastName).bind(Person::getLastName, Person::setLastName);
 
         return new BinderCrudEditor<>(binder, form);
     }
@@ -381,8 +386,8 @@ public class CrudView extends DemoView {
     // Person Bean
     public static class Person implements Cloneable {
         private Integer id;
-        private String firstName;
-        private String lastName;
+        private String firstName = "";
+        private String lastName = "";
 
         /**
          * No-arg constructor required by Crud to be able to instantiate a new bean

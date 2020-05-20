@@ -188,7 +188,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
                         throw new RuntimeException("Unable to instantiate new bean", ex);
                     }
 
-                    newListeners.forEach(listener -> listener.onComponentEvent(e));
+                    newListeners.forEach(listener -> listener.onComponentEvent(new NewEvent(e.getSource(),e.isFromClient(),getEditor().getItem(),null)));
                 }));
 
         ComponentUtil.addListener(this, EditEvent.class, (ComponentEventListener)

@@ -497,7 +497,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
 
     private void clearActiveItem() {
         this.gridActiveItem = null;
-        grid.select(null);
+        grid.deselectAll();
     }
 
     /**

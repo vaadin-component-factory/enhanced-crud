@@ -174,7 +174,9 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
     public Crud() {
         setI18n(CrudI18n.createDefault(), false);
         registerHandlers();
-    }
+        addAttachListener(e -> getElement()
+                .executeJs("this.__validate = function () {return true;}"));
+        }
 
     private void registerHandlers() {
         ComponentUtil.addListener(this, NewEvent.class, (ComponentEventListener)
@@ -188,7 +190,8 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
                         throw new RuntimeException("Unable to instantiate new bean", ex);
                     }
 
-                    newListeners.forEach(listener -> listener.onComponentEvent(new NewEvent(e.getSource(),e.isFromClient(),getEditor().getItem(),null)));
+                    newListeners.forEach(listener -> listener.onComponentEvent(
+                    		new NewEvent(e.getSource(),e.isFromClient(),getEditor().getItem(),null)));
                 }));
 
         ComponentUtil.addListener(this, EditEvent.class, (ComponentEventListener)

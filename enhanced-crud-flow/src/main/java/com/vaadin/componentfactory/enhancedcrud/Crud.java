@@ -22,9 +22,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.grid.editor.Editor;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.polymertemplate.Id;
 import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
 import com.vaadin.flow.data.provider.DataProvider;
@@ -64,7 +62,7 @@ import java.util.stream.Collectors;
  * @param <E> the bean type
  */
 @Tag("vaadin-crud")
-@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-crud", version="1.5.4")
+@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-crud", version="1.5.5")
 @JsModule("@vaadin-component-factory/vcf-enhanced-crud/src/vaadin-crud.js")
 @JsModule("@vaadin-component-factory/vcf-enhanced-crud/src/vaadin-crud-edit-column.js")
 public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, HasTheme {
@@ -91,6 +89,9 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
 	@Id("toolbar")
 	private Div toolbar;
 
+	@Id("editor")
+	private Div editorDiv;
+	
 	@Id("save")
 	private Button save;
 	@Id("cancel")
@@ -176,7 +177,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
         registerHandlers();
         addAttachListener(e -> getElement()
                 .executeJs("this.__validate = function () {return true;}"));
-        }
+    }
 
     private void registerHandlers() {
         ComponentUtil.addListener(this, NewEvent.class, (ComponentEventListener)
@@ -762,6 +763,10 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
     	this.cancelSave = true;
 	}
 
+	public Div getEditorDiv() {
+		return editorDiv;
+	}
+	
     /**
      * The base class for all Crud events.
      *

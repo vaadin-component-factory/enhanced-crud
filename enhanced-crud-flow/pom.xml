@@ -5,7 +5,7 @@
 
     <groupId>com.vaadin.componentfactory</groupId>
     <artifactId>enhanced-crud-flow</artifactId>
-    <version>1.1.7</version>
+    <version>1.1.8</version>
     <packaging>jar</packaging>
 
     <name>Enhanced Crud</name>
@@ -18,8 +18,8 @@
     </organization>
 
     <properties>
-    	<vaadin.version>14.1.28</vaadin.version>
-    	<flow.version>2.1.9</flow.version>
+    	<vaadin.version>14.2.1</vaadin.version>
+    	<flow.version>2.2.1</flow.version>
         <jetty.plugin.version>9.4.11.v20180605</jetty.plugin.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>

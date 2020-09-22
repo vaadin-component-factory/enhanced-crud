@@ -62,7 +62,7 @@ import java.util.stream.Collectors;
  * @param <E> the bean type
  */
 @Tag("vaadin-crud")
-@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-crud", version="1.5.5")
+@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-crud", version="1.6.0")
 @JsModule("@vaadin-component-factory/vcf-enhanced-crud/src/vaadin-crud.js")
 @JsModule("@vaadin-component-factory/vcf-enhanced-crud/src/vaadin-crud-edit-column.js")
 public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, HasTheme {
@@ -766,6 +766,24 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
 	public Div getEditorDiv() {
 		return editorDiv;
 	}
+
+    /**
+     * Sets the option to disable confirm dialog on cancel actions.
+     *
+     * @param confirmOnCancel {@code false} to disable it ({@code true}, by default).
+     */
+    public void setConfirmOnCancel(boolean confirmOnCancel) {
+        getElement().setProperty("confirmOnCancel", confirmOnCancel);
+    }
+	
+    /**
+     * Gets whether confirm dialog on cancel actions is enabled or not.
+     *
+     * @return {@code true} if enabled, {@code false} otherwise
+     */
+    public boolean isConfirmOnCancel() {
+        return getElement().getProperty("confirmOnCancel", false);
+    }
 	
     /**
      * The base class for all Crud events.

@@ -1,5 +1,6 @@
 package com.vaadin.componentfactory.enhancedcrud;
 
+import com.vaadin.componentfactory.enhancedcrud.Crud.EditMode;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.ComponentUtil;
@@ -44,7 +45,7 @@ import static java.util.stream.Collectors.toList;
 @Route("vaadin-crud")
 public class CrudView extends DemoView {
 
-    @Override
+	@Override
     protected void initView() {	
         basicCrud();
         // Using unicode spaces so as card does not show any header
@@ -73,10 +74,10 @@ public class CrudView extends DemoView {
         // Use cancelEdit in PreSaveEvent
         // PreSaveEvent is dispatched before editor writes the bean
         crud.addPreSaveListener(e -> {
-        	BinderCrudEditor<Person> crudEditor = (BinderCrudEditor<Person>) crud.getEditor();
-        	TextField textField = (TextField) crudEditor.getBinder().getFields().findFirst().get();
-        	if (textField.getValue().equals("noname")) {
-        		crud.cancelSave();
+            BinderCrudEditor<Person> crudEditor = (BinderCrudEditor<Person>) crud.getEditor();
+            TextField textField = (TextField) crudEditor.getBinder().getFields().findFirst().get();
+            if (textField.getValue().equals("noname")) {
+                crud.cancelSave();
 	        }
         });
         crud.addSaveListener(e -> {
@@ -85,7 +86,7 @@ public class CrudView extends DemoView {
         crud.addDeleteListener(e -> dataProvider.delete(e.getItem()));
         
         crud.addCancelListener(e -> {
-        	Notification.show("Cancel");
+            Notification.show("Cancel");
         });
 
         // Prefill new item
@@ -109,18 +110,22 @@ public class CrudView extends DemoView {
 
         // There are getters for the buttons, so that they can be modified
         // individually
-        Button changeEditorButtons = new Button("Change Editor Buttons");
+        Button changeEditorButtons = new Button("Change Buttons");
         changeEditorButtons.addClickListener(buttonClickEvent -> {
             crud.getDelete().setText("Restore");
             crud.getCancel().setText("Quit");
             crud.getSave().getElement().setAttribute("Style", "display: none;");
             crud.getCancel().addClickListener(clickEvent -> crud.setToolbarVisible(!crud.isToolbarVisible()));
         });
-        
         // Remove edit column and open editor by click listener
-        Button changeEditorOpening = new Button("Change Editor Opening");
+        Button changeEditorOpening = new Button("Change Opening");
         changeEditorOpening.addClickListener(buttonClickEvent -> {
-        	crud.setEditOnClick(!crud.isEditOnClick());
+            crud.setEditOnClick(!crud.isEditOnClick());
+        });
+        // Disable confirm dialog on cancel event
+        Button changeConfirmCancel = new Button("Disable Confirm");
+        changeConfirmCancel.addClickListener(buttonClickEvent -> {
+            crud.setConfirmOnCancel(false);
         });
 
         // There are getters for the buttons, so that they can hidden 
@@ -133,10 +138,7 @@ public class CrudView extends DemoView {
         });
 	    // end-source-example
         Div layout = new Div();
-//        Button btn = new Button("Save new");
-//        btn.getElement().setAttribute("slot", "footer");
-//        crud.getEditorDiv().add(btn);
-        layout.add(crud, hideToolbar, readOnly, changeEditorButtons,changeEditorOpening,disableDelete);
+        layout.add(crud, hideToolbar, readOnly, changeEditorButtons,changeEditorOpening,changeConfirmCancel,disableDelete);
         addCard("Basic CRUD", layout);
     }
 
@@ -144,7 +146,7 @@ public class CrudView extends DemoView {
         Grid<Person> grid = new Grid<>();
         grid.addColumn(Person::getFirstName).setHeader("firstName");
         grid.addColumn(Person::getLastName).setHeader("lastName");
-        return grid;
+        return grid;        
     }    
     
     // NOTE: heading is an unicode space

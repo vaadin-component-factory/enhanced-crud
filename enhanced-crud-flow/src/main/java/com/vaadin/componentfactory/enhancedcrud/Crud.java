@@ -19,6 +19,7 @@ package com.vaadin.componentfactory.enhancedcrud;
 
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.grid.Grid;
@@ -48,7 +49,6 @@ import java.util.stream.Collectors;
  * <u>Basic usage</u>
  *
  * {@code
- *   Crud<Person> crud = new Crud<>(Person.class, personEditor);
  *   crud.setDataProvider(personDataProvider);
  *
  *   // Handle save and delete events.
@@ -61,13 +61,16 @@ import java.util.stream.Collectors;
  *
  * @param <E> the bean type
  */
-@Tag("vaadin-crud")
-@NpmPackage(value = "@vaadin-component-factory/vcf-enhanced-crud", version="1.6.0")
-@JsModule("@vaadin-component-factory/vcf-enhanced-crud/src/vaadin-crud.js")
-@JsModule("@vaadin-component-factory/vcf-enhanced-crud/src/vaadin-crud-edit-column.js")
+@Tag("vcf-crud")
+@JsModule("./src/vcf-crud.js")
+@JsModule("./src/vcf-crud-edit-column.js")
+@CssImport(value = "./styles/vcf-crud-grid-edit.css", themeFor="vcf-crud-edit")
+@CssImport(value = "./styles/vcf-crud.css", themeFor="vcf-crud")
+@CssImport(value = "./styles/vcf-dialog-layout.css", themeFor="vcf-dialog-layout")
+@CssImport(value = "./styles/dialog-overlay.css", themeFor="vaadin-dialog-overlay")
 public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, HasTheme {
 
-    private static final String EDIT_COLUMN_KEY = "vaadin-crud-edit-column";
+    private static final String EDIT_COLUMN_KEY = "vcf-crud-edit-column";
     private static final String EVENT_PREVENT_DEFAULT_JS = "event.preventDefault()";
     private static final String FORM_SLOT_NAME = "form";
     private static final String GRID_SLOT_NAME = "grid";
@@ -730,7 +733,7 @@ public class Crud<E> extends PolymerTemplate<TemplateModel> implements HasSize, 
 	}
 
 	private static String createEditColumnTemplate(CrudI18n crudI18n) {
-        return "<vaadin-crud-edit aria-label=\"" + crudI18n.getEditLabel() + "\"></vaadin-crud-edit>";
+        return "<vcf-crud-edit aria-label=\"" + crudI18n.getEditLabel() + "\"></vcf-crud-edit>";
     }
 
     /**

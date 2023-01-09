@@ -5,6 +5,7 @@ import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -161,7 +162,7 @@ public class CrudView extends DemoView {
         FormLayout form = new FormLayout(firstName, lastName);
 
         binder.forField(firstName).asRequired().bind(Person::getFirstName, Person::setFirstName);
-        binder.forField(lastName).bind(Person::getLastName, Person::setLastName);
+        binder.forField(lastName).asRequired().bind(Person::getLastName, Person::setLastName);
 
         return new BinderCrudEditor<>(binder, form);
     }
@@ -296,7 +297,7 @@ public class CrudView extends DemoView {
     private void customGrid() {
         // begin-source-example
         // source-example-heading: Custom Grid
-        Grid<Person> grid = new Grid<>();
+        Grid<Person> grid = new Grid<>(Person.class);
         Crud<Person> crud = new Crud<>(Person.class, grid, createPersonEditor());
 
         PersonDataProvider dataProvider = new PersonDataProvider();
@@ -304,14 +305,15 @@ public class CrudView extends DemoView {
         crud.addSaveListener(e -> dataProvider.persist(e.getItem()));
         crud.addDeleteListener(e -> dataProvider.delete(e.getItem()));
 
+        grid.setColumns("firstName","lastName");
         Crud.addEditColumn(grid);
-        grid.addColumn(TemplateRenderer.<Person>
-                of("<img src=[[item.photoSource]] style=\"height: 40px; border-radius: 50%;\">")
-                .withProperty("photoSource", CrudView::randomProfilePictureUrl))
-                .setWidth("60px")
-                .setFlexGrow(0);
-        grid.addColumn(Person::getFirstName).setHeader("First name");
-        grid.addColumn(Person::getLastName).setHeader("Last name");
+//        grid.addColumn(TemplateRenderer.<Person>
+//                of("<img src=[[item.photoSource]] style=\"height: 40px; border-radius: 50%;\">")
+//                .withProperty("photoSource", CrudView::randomProfilePictureUrl))
+//                .setWidth("60px")
+//                .setFlexGrow(0);
+//        grid.addColumn(Person::getFirstName).setHeader("First name");
+//        grid.addColumn(Person::getLastName).setHeader("Last name");
         // end-source-example
 
         addCard("Custom Grid", crud);

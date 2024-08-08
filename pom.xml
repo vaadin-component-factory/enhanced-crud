@@ -19,8 +19,9 @@
 
     <licenses>
         <license>
-            <name>cval3</name>
-            <url>https://vaadin.com/license/cval-3</url>
+            <name>Vaadin Commercial License</name>
+            <url>https://vaadin.com/commercial-license-and-service-terms</url>
+            <distribution>manual</distribution>
         </license>
     </licenses>
 

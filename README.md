@@ -4,7 +4,7 @@ Vaadin Crud for Flow is a UI component add-on for Vaadin which provides CRUD UI 
 
 ## License & Author
 
-This Add-on is distributed under [Commercial Vaadin Add-on License version 3](http://vaadin.com/license/cval-3) (CVALv3). For license terms, see LICENSE.txt.
+This Add-on is distributed under [Vaadin Commercial License and Service Terms](https://vaadin.com/commercial-license-and-service-terms) (VCL). For license terms, see linked text.
 
 Vaadin Crud is written by Vaadin Ltd.
 
